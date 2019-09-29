@@ -21,9 +21,9 @@
 		return json_encode($sql);
 	}
 
-  function registro(){
+ 	function registro(){
 		$resp;
-    $db = new Bd();
+    	$db = new Bd();
 		$db->conectar();
 
 		if(validarCorreo($_REQUEST["email"]) == 0){
@@ -51,9 +51,6 @@
 		return $sql["cantidad_registros"];
 	}
 
-  function AgregarAhorro(){
-    
-  }
 
    function AgregarAhorro(){
 	$db = new Bd();
@@ -67,18 +64,17 @@
    }
 
    function traerAhorros(){
+	$resp;
 	$db = new Bd();
 	$db->conectar();
 
 	$sql = $db->consulta("SELECT * FROM ahorros WHERE fk_id_usuario = :idUsuario", array(":idUsuario" =>  $_REQUEST["idUsuario"] ));
-
+	
 	$db->desconectar();
+	
 	
 	return json_encode($sql);
    }
-		
-	
-
 
 
   if(@$_REQUEST['accion']){
