@@ -26,7 +26,7 @@
     $db = new Bd();
 		$db->conectar();
 
-		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass, pin) VALUES (:nombres, :apellidos, :email, :pass, :pin)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => encriptarPass($_REQUEST["apellidos"]), ":email" => $_REQUEST["email"], ":pass" => $_REQUEST["pass"], ":pin"=> "0000"));
+		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass, pin) VALUES (:nombres, :apellidos, :email, :pass, :pin)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => $_REQUEST["apellidos"], ":email" => $_REQUEST["email"], ":pass" => encriptarPass($_REQUEST["pass"]), ":pin"=> "0000"));
 
 		$db->desconectar();
 		
