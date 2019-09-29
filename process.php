@@ -10,6 +10,7 @@ function textoblanco($texto){
   return $cont;
 }
 
+
 /*extract($_POST);
 
 $sentencia = "INSERT INTO contacto_clientes(ciudad, nombre_cliente, correo_cliente, telefono_cliente, nro_documento, modelo, fecha_compra, mensaje_cliente, fecha_registro, condiciones) VALUES ('$ciudad' ,'$nombre', '$correo', '$telefono', '$documento', '$modelo', '$fecha_compra', '$mensaje', NOW(), '$acepto')";
@@ -70,7 +71,7 @@ $mail->setFrom('hysoporte018000@gmail.com', 'Mensajes Web');
 //Set an alternative reply-to address
 //$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
 //Set who the message is to be sent to
-$mail->addAddress('anthourrego@gmail.com', 'Anthony 1');
+$mail->addAddress('jf.arenas30@ciaf.edu.co', 'email 1');
 //$mail->addAddress('analistamercadeo@hyundailatinoamerica.com', 'Servicio al Cliente');
 //Set the subject line
 $mail->Subject = "Mensaje Web México";
