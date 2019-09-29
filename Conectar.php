@@ -1,17 +1,6 @@
 <?php
-  $max_salida=10; // Previene algun posible ciclo infinito limitando a 10 los ../
-  $ruta_raiz=$ruta="";
-  while($max_salida>0){
-    if(@is_file($ruta.".htaccess")){
-      $ruta_raiz=$ruta; //Preserva la ruta superior encontrada
-      break;
-    }
-    $ruta.="../";
-    $max_salida--;
-  }
-
   //Se llama la configuracion inicial
-  require_once($ruta_raiz . 'clases/config.php');
+  require_once('config.php');
   
   class Bd{
 
