@@ -21,7 +21,7 @@
 		return json_encode($sql);
 	}
 
-  	function registro(){
+  function registro(){
 		$resp;
    		 $db = new Bd();
 		$db->conectar();
@@ -121,7 +121,7 @@
 			//Create a new PHPMailer instance
 			$mail = new PHPMailer;
 			//Tell PHPMailer to use SMTP
-			$mail->isSMTP();
+			//$mail->isSMTP();
 		
 			$mail->SMTPDebug = 0;
 			//Ask for HTML-friendly debug output
@@ -242,6 +242,19 @@
 		$db->sentencia("UPDATE montos SET chec = :chec WHERE id = :id", array(":chec" => $_REQUEST["chec"], ":id" => $_REQUEST["id"]));
 
 		$db->sentencia("UPDATE ahorros SET ahorrado = :ahorrado WHERE id = :id", array(":ahorrado" => $_REQUEST["ahorrado"], ":id" => $_REQUEST["idAhorro"]));
+
+		$db->desconectar();
+
+		return 1;
+	}
+
+	function borrarAhorro(){
+		$db = new Bd();
+		$db->conectar();
+
+		$db->sentencia("DELETE FROM montos WHERE fk_id_ahorro = :fk_id_ahorro", array(":fk_id_ahorro" => $_REQUEST['idAhorro']));
+
+		$db->sentencia("DELETE FROM ahorros WHERE id = :id", array(":id" => $_REQUEST['idAhorro']));
 
 		$db->desconectar();
 
