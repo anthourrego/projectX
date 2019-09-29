@@ -45,6 +45,21 @@
 	return 1;
    }
 
+   function traerAhorros(){
+	$db = new Bd();
+	$db->conectar();
+
+	$sql = $db->consulta("SELECT * FROM ahorros WHERE fk_id_usuario = :idUsuario", array(":idUsuario" =>  $_REQUEST["idUsuario"] ));
+
+	$db->desconectar();
+	
+	return json_encode($sql);
+   }
+		
+	
+
+
+
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
       echo($_REQUEST['accion']());
