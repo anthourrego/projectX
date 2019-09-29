@@ -8,7 +8,9 @@
 
 	function conexion(){
 		return 1;
-	}
+  }
+  
+
 
 	function inicarSesion(){
 		$db = new Bd();
@@ -24,6 +26,10 @@
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
       echo($_REQUEST['accion']());
+    }else{
+      echo 'Accion '.$_REQUEST['accion'].' no Existe';
     }
+  }else{
+    echo 'no se ha seleccionado alguna acciòn';
   }
 ?>

@@ -93,7 +93,6 @@
       $this->result->execute($prepare);
     }
 
-
     public function desconectar(){
       $this->vector_consulta = array();
       $this->result = null;
