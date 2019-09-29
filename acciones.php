@@ -38,7 +38,7 @@
 	$db = new Bd();
 	$db->conectar();
 
-	$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo)  ", array(":fk_id_usuario" => $_REQUEST["idUsuario"], ":nombre" => $_REQUEST["nombre"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" => $_REQUEST["ahorrado"], ":intervalo" => $_REQUEST["intervalo"]));
+	$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta)  ", array(":fk_id_usuario" =>  localStorage.id , ":nombre" => $_REQUEST["nombre"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => $_REQUEST["fechaMeta"]));
 
 	$db->desconectar();
 	
