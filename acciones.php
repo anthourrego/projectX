@@ -89,7 +89,6 @@
 		
 		$db->desconectar();
 		
-		
 		return json_encode($sql);
 	}
 	
