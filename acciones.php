@@ -92,60 +92,71 @@
 	}
 
 	function enviarPin(){
+		
 		$resp;
 		$correoDestino = $_REQUEST["email"];
-	
-		date_default_timezone_set('Etc/UTC');
-	
-		require 'PHPMailer/PHPMailerAutoload.php';
-	
-		//Create a new PHPMailer instance
-		$mail = new PHPMailer;
-		//Tell PHPMailer to use SMTP
-		$mail->isSMTP();
-	
-		$mail->SMTPDebug = 0;
-		//Ask for HTML-friendly debug output
-		$mail->Debugoutput = 'html';
-		//Set the hostname of the mail server
-		$mail->Host = 'smtp.gmail.com';
-		//Set the SMTP port number - likely to be 25, 465 or 587
-		$mail->Port = 587;
-	
-		$mail->SMTPSecure = 'tls';
-		//Whether to use SMTP authentication
-		$mail->SMTPAuth = true;
-		//Username to use for SMTP authentication
-		$mail->Username = 'hysoporte018000@gmail.com';
-		//Password to use for SMTP authentication
-		$mail->Password = 'hy123456789';
-		//Set who the message is to be sent from
-		$mail->setFrom('hysoporte018000@gmail.com', 'Mensajes Web');
-		//Set an alternative reply-to address
-		//$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
-		//Set who the message is to be sent to
-		$mail->addAddress($correoDestino, 'email 1');
-		//$mail->addAddress('analistamercadeo@hyundailatinoamerica.com', 'Servicio al Cliente');
-		//Set the subject line
-		$mail->Subject = "Pin recuperacion password - PersonalBanca";
-		//Read an HTML message body from an external file, convert referenced images to embedded,
-		//convert HTML into a basic plain-text alternative body
-		$pin = generarPin();
-		$mail->msgHTML('Pin de recuperacion: '.$pin);
-		setearPin($pin, $correoDestino);
-	
-	
-		$mail->CharSet = 'UTF-8';
-	
-		//send the message, check for errors
-		if (!$mail->send()) {
-		  echo "Mailer Error: " . $mail->ErrorInfo;
-		  echo "No se ha podido enviar el mensaje.";
-		  $resp['success'] = false;
-		} else {
-		  $resp['success'] = true;
-		}
 
+		if( validarCorreo($correoDestino) ==1){
+
+			date_default_timezone_set('Etc/UTC');
+	
+			require 'PHPMailer/PHPMailerAutoload.php';
+		
+			//Create a new PHPMailer instance
+			$mail = new PHPMailer;
+			//Tell PHPMailer to use SMTP
+			$mail->isSMTP();
+		
+			$mail->SMTPDebug = 0;
+			//Ask for HTML-friendly debug output
+			$mail->Debugoutput = 'html';
+			//Set the hostname of the mail server
+			$mail->Host = 'smtp.gmail.com';
+			//Set the SMTP port number - likely to be 25, 465 or 587
+			$mail->Port = 587;
+		
+			$mail->SMTPSecure = 'tls';
+			//Whether to use SMTP authentication
+			$mail->SMTPAuth = true;
+			//Username to use for SMTP authentication
+			$mail->Username = 'hysoporte018000@gmail.com';
+			//Password to use for SMTP authentication
+			$mail->Password = 'hy123456789';
+			//Set who the message is to be sent from
+			$mail->setFrom('hysoporte018000@gmail.com', 'Mensajes Web');
+			//Set an alternative reply-to address
+			//$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
+			//Set who the message is to be sent to
+			$mail->addAddress($correoDestino, 'email 1');
+			//$mail->addAddress('analistamercadeo@hyundailatinoamerica.com', 'Servicio al Cliente');
+			//Set the subject line
+			$mail->Subject = "Pin recuperacion password - PersonalBanca";
+			//Read an HTML message body from an external file, convert referenced images to embedded,
+			//convert HTML into a basic plain-text alternative body
+			$pin = generarPin();
+			$mail->msgHTML('Pin de recuperacion: '.$pin);
+			setearPin($pin, $correoDestino);
+		
+		
+			$mail->CharSet = 'UTF-8';
+		
+			//send the message, check for errors
+			if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			echo "No se ha podido enviar el mensaje.";
+			$resp['success'] = false;
+			} else {
+			$resp['success'] = true;
+			}
+
+			
+
+		}else{
+
+			$resp['success'] = false;
+
+		}
+	
 		return json_encode($resp);
 	
 	}
