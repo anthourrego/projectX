@@ -10,18 +10,32 @@
 		return 1;
   }
   
-
-
-	function inicarSesion(){
+	function iniciarSesion(){
 		$db = new Bd();
 		$db->conectar();
 
-		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email AND pass = :pass", array(":email" => $_REQUEST["usuario"], ":pass" => $_REQUEST["password"]));
+		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email AND pass = :pass", array(":email" => $_REQUEST["email"], ":pass" => $_REQUEST["password"]));
 
 		$db->desconectar();
 		
 		return json_encode($sql);
 	}
+
+  function registro(){
+
+    $db = new Bd();
+		$db->conectar();
+
+		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass) VALUES (:nombres, :apellidos, :email, :pass)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => $_REQUEST["apellidos"], ":email" => $_REQUEST["email"], ":pass" => $_REQUEST["pass"]));
+
+		$db->desconectar();
+		
+		return 1;
+  }
+
+  function AgregarAhorro(){
+    
+  }
 
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
