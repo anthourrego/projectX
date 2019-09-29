@@ -51,16 +51,34 @@
 		return $sql["cantidad_registros"];
 	}
 
-  function AgregarAhorro(){
+  function agregarAhorro(){
 		$db = new Bd();
 		$db->conectar();
 
-		$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta)  ", array(":fk_id_usuario" =>  $_REQUEST["fk_id_usuario"] , ":nombre" => $_REQUEST["nombre"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => $_REQUEST["fechaMeta"]));
+		if (validarCantidadAhorros($_REQUEST["fk_id_usuario"]) < 3 ) {
+			$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta, proposito) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta, :proposito)", array(":fk_id_usuario" => $_REQUEST["fk_id_usuario"], ":nombre" => $_REQUEST["nombreAhorro"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => "", ":proposito" => $_REQUEST["proposito"]));
+			$resp["success"] = true;
+			$resp['msj'] = "Se ha registrado correctamente";
+		}else{
+			$resp["success"] = false;
+			$resp['msj'] = "Ya tienes tres ahorros creados";
+		}
 
 		$db->desconectar();
 
-		return 1;
-  }
+		return json_encode($resp);
+	}
+	
+	function validarCantidadAhorros($idUsuario){
+		$db = new Bd();
+		$db->conectar();
+
+		$sql = $db->consulta("SELECT * FROM ahorros WHERE fk_id_usuario = :fk_id_usuario", array(":fk_id_usuario" => $idUsuario));
+
+		$db->desconectar();
+
+		return $sql["cantidad_registros"];
+	}
 
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
