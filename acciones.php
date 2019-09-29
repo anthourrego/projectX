@@ -14,7 +14,7 @@
 		$db = new Bd();
 		$db->conectar();
 
-		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email AND pass = :pass", array(":email" => $_REQUEST["email"], ":pass" => $_REQUEST["password"]));
+		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email AND pass = :pass", array(":email" => $_REQUEST["email"], ":pass" => encriptarPass($_REQUEST["password"])));
 
 		$db->desconectar();
 		
@@ -26,7 +26,7 @@
     $db = new Bd();
 		$db->conectar();
 
-		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass) VALUES (:nombres, :apellidos, :email, :pass)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => $_REQUEST["apellidos"], ":email" => $_REQUEST["email"], ":pass" => $_REQUEST["pass"]));
+		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass, pin) VALUES (:nombres, :apellidos, :email, :pass, :pin)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => encriptarPass($_REQUEST["apellidos"]), ":email" => $_REQUEST["email"], ":pass" => $_REQUEST["pass"], ":pin"=> "0000"));
 
 		$db->desconectar();
 		
