@@ -1,21 +1,4 @@
 <?php  
-
-  $max_salida=10; // Previene algun posible ciclo infinito limitando a 10 los ../
-  $ruta_raiz=$ruta="";
-  while($max_salida>0){
-    if(@is_file($ruta.".htaccess")){
-      $ruta_raiz=$ruta; //Preserva la ruta superior encontrada
-      break;
-    }
-    $ruta.="../";
-    $max_salida--;
-  }
-  //Esta es la ruta disco desde la raiz del serviddor hasta donde se encuentran los scripts
-  define("RUTA_RAIZ","/mandino_desarrollo/"); 
-
-  //Ruta de almacenamiento
-  define("RUTA_ALMACENAMIENTO", "/mandino_desarrollo/almacenamiento/"); 
-
   //Zona Horaria
   date_default_timezone_set('America/Bogota');
 
