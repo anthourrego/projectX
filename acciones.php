@@ -3,12 +3,12 @@
 	header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 
 
-  require_once("Conectar.php");
+ 	require_once("Conectar.php");
 	require_once("funciones_generales.php");
 
 	function conexion(){
 		return 1;
-  }
+  	}
   
 	function iniciarSesion(){
 		$db = new Bd();
@@ -21,9 +21,15 @@
 		return json_encode($sql);
 	}
 
+<<<<<<< HEAD
   function registro(){
 		$resp;
     $db = new Bd();
+=======
+    function registro(){
+
+		$db = new Bd();
+>>>>>>> juanF
 		$db->conectar();
 
 		if(validarCorreo($_REQUEST["email"]) == 0){
@@ -37,6 +43,7 @@
 
 		$db->desconectar();
 		
+<<<<<<< HEAD
 		return json_encode($resp);
 	}
 
@@ -50,10 +57,22 @@
 
 		return $sql["cantidad_registros"];
 	}
+=======
+		return 1;
+>>>>>>> juanF
 
-  function AgregarAhorro(){
-    
-  }
+	}
+
+   function AgregarAhorro(){
+	$db = new Bd();
+	$db->conectar();
+
+	$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta)  ", array(":fk_id_usuario" =>  $_REQUEST["fk_id_usuario"] , ":nombre" => $_REQUEST["nombre"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => $_REQUEST["fechaMeta"]));
+
+	$db->desconectar();
+	
+	return 1;
+   }
 
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
