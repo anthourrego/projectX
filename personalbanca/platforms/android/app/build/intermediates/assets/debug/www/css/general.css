@@ -1,0 +1,15 @@
+html{
+  background: url('../img/fondo.jpg') no-repeat center center fixed;
+  background-color: rgba(0,0,0,0.8);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+
+body{
+  background-color: transparent;
+}
+
+
