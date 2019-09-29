@@ -109,7 +109,6 @@
 	}
 
 	function enviarPin(){
-		
 		$resp;
 		$correoDestino = $_REQUEST["email"];
 
@@ -159,12 +158,60 @@
 		
 			//send the message, check for errors
 			if (!$mail->send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
-			echo "No se ha podido enviar el mensaje.";
-			$resp['success'] = false;
+				echo "Mailer Error: " . $mail->ErrorInfo;
+				echo "No se ha podido enviar el mensaje.";
+				$resp['success'] = false;
 			} else {
-			$resp['success'] = true;
+				$resp['success'] = true;
 			}
+		}else{
+			$resp['success'] = false;
+		}
+		return json_encode($resp);
+	}
+	
+	function generarPin(){
+		return rand( 0 ,  99999 );
+	}
+	
+	function setearPin($pin, $email){
+		$db = new Bd();
+		$db->conectar();
+
+		$db->sentencia("UPDATE usuarios SET pin = :pin where email= :email ", array(":pin" => $pin, ":email" => $email));
+		$db->desconectar();
+
+	}
+
+	function validarPin(){
+		$resp;
+		$db = new Bd();
+		$db->conectar();
+	
+		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email and pin = :pin", array(":email" =>  $_REQUEST["email"], ":pin" =>  $_REQUEST["pin"] ));
+		
+		$db->desconectar();
+
+		if($sql['cantidad_registros'] > 0){
+			$resp['success'] = true;
+		}else {
+			$resp['success'] = false;
+		}
+		
+		return json_encode($resp);
+	}
+	
+
+	function nuevaPassword(){
+		$db = new Bd();
+		$db->conectar();
+
+		$db->sentencia("UPDATE usuarios SET pass = :pass where email= :email ", array(":pass" => encriptarPass($_REQUEST["pass"]), ":email" => $_REQUEST["email"]));
+		$db->desconectar();
+
+		return 1;
+
+	}
 
 	function datosAhorro(){
 		$db = new Bd();
@@ -201,64 +248,6 @@
 		return 1;
 	}
 
-			
-
-		}else{
-
-			$resp['success'] = false;
-
-		}
-	
-		return json_encode($resp);
-	
-	}
-	
-	function generarPin(){
-		return rand( 0 ,  99999 );
-	}
-	
-	function setearPin($pin, $email){
-
-		$db = new Bd();
-		$db->conectar();
-
-		$db->sentencia("UPDATE usuarios SET pin = :pin where email= :email ", array(":pin" => $pin, ":email" => $email));
-		$db->desconectar();
-
-	}
-
-	function validarPin(){
-
-		$resp;
-		$db = new Bd();
-		$db->conectar();
-	
-		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email and pin = :pin", array(":email" =>  $_REQUEST["email"], ":pin" =>  $_REQUEST["pin"] ));
-		
-		$db->desconectar();
-
-		if($sql['cantidad_registros'] > 0){
-			$resp['success'] = true;
-		}else {
-			$resp['success'] = false;
-		}
-		
-		return json_encode($resp);
-
-	}
-	
-
-	function nuevaPassword(){
-
-		$db = new Bd();
-		$db->conectar();
-
-		$db->sentencia("UPDATE usuarios SET pass = :pass where email= :email ", array(":pass" => encriptarPass($_REQUEST["pass"]), ":email" => $_REQUEST["email"]));
-		$db->desconectar();
-
-		return 1;
-
-	}
 
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
