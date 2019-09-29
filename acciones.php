@@ -52,13 +52,31 @@
 	}
 
   function agregarAhorro(){
+		$uniqid = uniqid();
+		$monto = 0;
+		$montoDef = 0; 
 		$db = new Bd();
 		$db->conectar();
 
 		if (validarCantidadAhorros($_REQUEST["fk_id_usuario"]) < 3 ) {
-			$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta, proposito) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta, :proposito)", array(":fk_id_usuario" => $_REQUEST["fk_id_usuario"], ":nombre" => $_REQUEST["nombreAhorro"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => "", ":proposito" => $_REQUEST["proposito"]));
-			$resp["success"] = true;
-			$resp['msj'] = "Se ha registrado correctamente";
+			$db->sentencia("INSERT INTO ahorros (fk_id_usuario, nombre, objetivo, ahorrado, intervalo, fechaMeta, proposito, uniqid) VALUES (:fk_id_usuario, :nombre, :objetivo, :ahorrado, :intervalo, :fechaMeta, :proposito, :uniqid)", array(":fk_id_usuario" => $_REQUEST["fk_id_usuario"], ":nombre" => $_REQUEST["nombreAhorro"], ":objetivo" => $_REQUEST["objetivo"], ":ahorrado" =>'0', ":intervalo" => $_REQUEST["intervalo"], ":fechaMeta" => "", ":proposito" => $_REQUEST["proposito"], ":uniqid" => $uniqid));
+
+			$sql = $db->consulta("SELECT * FROM ahorros WHERE uniqid = :uniqid", array(":uniqid" => $uniqid));
+
+			if ($sql["cantidad_registros"] == 1) {
+				
+				while($montoDef < $_REQUEST["objetivo"]){
+					$monto +=  $_REQUEST["intervalo"];
+					$montoDef += $monto;
+					$db->sentencia("INSERT INTO montos (fk_id_ahorro, intervalo, chec) VALUES(:fk_id_ahorro, :intervalo, :chec)", array(":fk_id_ahorro" => $sql[0]["id"], ":intervalo" => $monto, ":chec" => 0)); 
+				}
+
+				$resp["success"] = true;
+				$resp['msj'] = "Se ha registrado correctamente";
+			}else{
+				$resp["success"] = false;
+				$resp['msj'] = "No se ha creado el ahorro";
+			}
 		}else{
 			$resp["success"] = false;
 			$resp['msj'] = "Ya tienes tres ahorros creados";
@@ -81,7 +99,6 @@
 	}
 
 	function traerAhorros(){
-		$resp;
 		$db = new Bd();
 		$db->conectar();
 	
@@ -91,7 +108,41 @@
 		
 		return json_encode($sql);
 	}
-	
+
+	function datosAhorro(){
+		$db = new Bd();
+		$db->conectar();
+
+		$sql = $db->consulta("SELECT * FROM ahorros WHERE id = :id", array(":id" => $_REQUEST["idAhorro"]));
+
+		$db->desconectar();
+
+		return json_encode($sql);
+	}
+
+	function datosMontos(){
+		$db = new Bd();
+		$db->conectar();
+
+		$sql = $db->consulta("SELECT * FROM montos WHERE fk_id_ahorro = :fk_id_ahorro ORDER BY intervalo ASC", array(":fk_id_ahorro" => $_REQUEST["idAhorro"]));
+
+		$db->desconectar();
+
+		return json_encode($sql);
+	}
+
+	function actualizarMonto(){
+		$db = new Bd();
+		$db->conectar();
+
+		$db->sentencia("UPDATE montos SET chec = :chec WHERE id = :id", array(":chec" => $_REQUEST["chec"], ":id" => $_REQUEST["id"]));
+
+		$db->sentencia("UPDATE ahorros SET ahorrado = :ahorrado WHERE id = :id", array(":ahorrado" => $_REQUEST["ahorrado"], ":id" => $_REQUEST["idAhorro"]));
+
+		$db->desconectar();
+
+		return 1;
+	}
 
   if(@$_REQUEST['accion']){
     if(function_exists($_REQUEST['accion'])){
