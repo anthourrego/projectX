@@ -130,8 +130,5 @@
     return($fecha_retornar);  
   }
 
-  function datosUsuario(){
-    return json_encode($_REQUEST);
-  }
 
 ?>
