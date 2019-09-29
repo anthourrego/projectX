@@ -22,16 +22,34 @@
 	}
 
   function registro(){
-
+		$resp;
     $db = new Bd();
 		$db->conectar();
 
-		$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass, pin) VALUES (:nombres, :apellidos, :email, :pass, :pin)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => $_REQUEST["apellidos"], ":email" => $_REQUEST["email"], ":pass" => encriptarPass($_REQUEST["pass"]), ":pin"=> "0000"));
+		if(validarCorreo($_REQUEST["email"]) == 0){
+			$db->sentencia("INSERT INTO usuarios (nombres, apellidos, email, pass, pin) VALUES (:nombres, :apellidos, :email, :pass, :pin)  ", array(":nombres" => $_REQUEST["nombres"], ":apellidos" => $_REQUEST["apellidos"], ":email" => $_REQUEST["email"], ":pass" => encriptarPass($_REQUEST["pass"]), ":pin"=> "0000"));
+			$resp["success"] = true;
+			$resp['msj'] = "Se ha registrado correctamente";
+		}else{
+			$resp["success"] = false;
+			$resp['msj'] = "El correo ya se encuentra registrado";
+		}
 
 		$db->desconectar();
 		
-		return 1;
-  }
+		return json_encode($resp);
+	}
+
+	function validarCorreo($email){
+		$db = new Bd();
+		$db->conectar();
+
+		$sql = $db->consulta("SELECT * FROM usuarios WHERE email = :email", array(":email" => $email));
+
+		$db->desconectar();
+
+		return $sql["cantidad_registros"];
+	}
 
   function AgregarAhorro(){
     
