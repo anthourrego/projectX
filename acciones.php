@@ -51,7 +51,7 @@
 		return $sql["cantidad_registros"];
 	}
 
-  function agregarAhorro(){
+  	function agregarAhorro(){
 		$db = new Bd();
 		$db->conectar();
 
@@ -80,13 +80,13 @@
 		return $sql["cantidad_registros"];
 	}
 
-  if(@$_REQUEST['accion']){
-    if(function_exists($_REQUEST['accion'])){
-      echo($_REQUEST['accion']());
-    }else{
-      echo 'Accion '.$_REQUEST['accion'].' no Existe';
-    }
-  }else{
-    echo 'no se ha seleccionado alguna acciòn';
-  }
+	if(@$_REQUEST['accion']){
+		if(function_exists($_REQUEST['accion'])){
+			echo($_REQUEST['accion']());
+		}else{
+		echo 'Accion '.$_REQUEST['accion'].' no Existe';
+		}
+	}else{
+		echo 'no se ha seleccionado alguna acciòn';
+	}
 ?>
